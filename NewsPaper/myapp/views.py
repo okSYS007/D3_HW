@@ -17,5 +17,6 @@ class PostList(ListView):
 # # создаём представление, в котором будут детали конкретного отдельного товара
 class PostDetail(DetailView):
     model = Post # модель всё та же, но мы хотим получать детали конкретно отдельного товара
-    template_name = 'news.html' # название шаблона будет product.html
-    context_object_name = 'news' # название объекта
+    template_name = 'article.html' # название шаблона будет product.html
+    context_object_name = 'article' # название объекта
+    queryset = Post.objects.filter(post_choice = 1).order_by('-creation_date')

@@ -1,12 +1,47 @@
 
 {% extends 'flatpages/default.html' %}
+  
+{% load custom_filters %} <!-- не забываем заранее загружать наши фильтры! -->
  
-
 {% block title %}
 News
 {% endblock title %}
 
 {% block content %}
 <h1>Все новости</h1>
-{{ news }}
+<h3>{{ time_now|date:'M d Y' }}</h3> 
+{% if news|length > 1 %}
+<h3>Всего новостей: {{ news|length }}</h3>
+{% endif %}
+{% if news %}
+    {% if news|length < 1 %}
+        {{ news.post_title|Censor:news.post_title}}
+        <br>
+        {{ news.post_text|Censor:news.post_text}} 
+        <br>
+        {{ news.creation_date|date:'d-M-Y-H:i' }}
+    {% else %}
+        <h4>Новости: </h4>
+        {% for item in news %}
+            {% if item.post_choice == '1' %}
+            {{ item.post_title|Censor:item.post_title}}
+            {{ item.creation_date|date:'d M Y' }}
+            {{ item.post_text|truncatechars:50|Censor:item.post_text }}
+            <br>
+            {% endif %}
+        {% endfor %} 
+        <h4>Статьи: </h4>
+        {% for art in news %}
+            {% if art.post_choice == '2' %}
+            {{ art.post_title|Censor:art.post_title}}
+            {{ art.creation_date|date:'d M Y' }}
+            {{ art.post_text|Censor:art.post_text}}  
+            <br> 
+            {% endif %}
+        {% endfor %}        
+    {% endif %}
+{% else %}
+    <h2>Новостей нет!</h2>
+{% endif %}
+
 {% endblock content %}

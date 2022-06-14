@@ -21,23 +21,16 @@ class Author(models.Model):
         self.save()
 
     def __str__(self):
-        return '%s %s' % (self.author_user, self.author_rate)
+        return '%s' % (self.author_user)
  
 class Category(models.Model):
 
     category_name = models.CharField(max_length=255, unique=True)
 
+    def __str__(self):
+        return f'{self.category_name}'
+
 class Post(models.Model):
-
-    def like(self):
-        self.post_rate += 1
-        self.save()
-    def dislike(self):
-        self.post_rate -= 1
-        self.save()
-
-    def preview(self):
-        return self.post_text[:124] + '...' if len(self.post_text) > 124 else self.post_text + '...'
 
     post_author = models.ForeignKey(Author, on_delete=models.CASCADE)
     CHOICES = [
@@ -53,8 +46,18 @@ class Post(models.Model):
     post_text = models.TextField(default='content')
     post_rate = models.IntegerField(default=0)
 
+    def like(self):
+        self.post_rate += 1
+        self.save()
+    def dislike(self):
+        self.post_rate -= 1
+        self.save()
+
+    def preview(self):
+        return self.post_text[:124] + '...' if len(self.post_text) > 124 else self.post_text + '...'
+
     def __str__(self):
-        return '%s' % (self.preview())
+        return '%s %s' % (self.post_title, self.creation_date)
 
 class PostCategory(models.Model):
 

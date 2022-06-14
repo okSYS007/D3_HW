@@ -20,4 +20,3 @@ class PostDetail(DetailView):
     template_name = 'article.html' # название шаблона будет product.html
     context_object_name = 'article' # название объекта
     queryset = Post.objects.filter(post_choice = 1).order_by('-creation_date')
-    

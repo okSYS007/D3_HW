@@ -1,7 +1,8 @@
+
 from django import template
  
 register = template.Library()
-
+ 
 @register.filter(name='Censor')  
 def Censor(value, arg):
 
